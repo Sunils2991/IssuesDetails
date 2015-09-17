@@ -4,9 +4,9 @@ IssueDetails is an application used to know the total number of open issues and 
 
 This application is written in Node.js, html and angular.js. Web pages are written in html and angular.js and server is node.js.
 
-UI will have a search option where user can give github project url and "Go" button to search. Example for searching url: "https://github.com/Shippable/support", URL must contain owner name followed by project name. When "Go" button is pressed, to the given url "/issues" is added and then calls the restapi "localhost:3000/scrape" POST method running in node server.
+Home page(localhost:3000/home) will have a search option where user can give github project url and "Go" button to search. Example for searching url: "https://github.com/Shippable/support", URL must contain owner name followed by project name. When "Go" button is pressed, to the given url "/issues" is added and then calls the restapi "localhost:3000/issuesDetails" POST method running in node server.
 
-Restapi /scrape will parse the json body and gets github url. By using http request method github url is called and html page is fetched by cheerio module. Then by traversing the DOM of web page to get the details.
+REST api /issuesDetails will parse the json body and gets github url. By using http request method github url is called and html page is fetched by cheerio module. Then by traversing the DOM of web page to get the details.
 
 In the web page, Class "table-list-header-toggle" contains the total number of open issues. From jquery data from class is fetched and formatted from javascirpt to get total number of issues.
 
@@ -25,4 +25,6 @@ Number of days difference is calculated and Stored in the Json variable accordin
   -run the command "npm install"(required node modules will be downloaded)
   
   -"node ./bin/www" runs the server listening at the port 3000.
+  
+  -Home page(localhost:3000/home) can be called from browser.
   
