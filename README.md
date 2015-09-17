@@ -14,12 +14,15 @@ Once total number of issues are found, number of web pages  for storing the issu
 
 Number of days difference is calculated and Stored in the Json variable according to day difference. Response is sent with JSON body which contains the open issues opened in a day, week and above one week. In the web page this response is parsed and displayed in the table.
 
-Requirements:
+#Requirements:
   -Node.js
 
 #Node server set up Steps
   -downlaod the project zip file and unzip it.
+  
   -run the command prompt and go to the project folder.
+  
   -run the command "npm install"(required node modules will be downloaded)
+  
   -"node ./bin/www" runs the server listening at the port 3000.
   
