@@ -8,9 +8,7 @@ UI will have a search option where user can give github project url and "Go" but
 
 Restapi /scrape will parse the json body and gets github url. By using http request method github url is called and html page is fetched by cheerio module. Then by traversing the DOM of web page to get the details.
 
-In the web page:
-
-Class "table-list-header-toggle" contains the total number of open issues. From jquery data from class is fetched and formatted from javascirpt to get total number of issues.
+In the web page, Class "table-list-header-toggle" contains the total number of open issues. From jquery data from class is fetched and formatted from javascirpt to get total number of issues.
 
 Once total number of issues are found, number of web pages  for storing the issues is calculated and each web page is requested. From each page the date of issue opened from all issues is found from the class "issue-meta" and pushed in to the array.
 
