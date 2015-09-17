@@ -13,3 +13,13 @@ In the web page, Class "table-list-header-toggle" contains the total number of o
 Once total number of issues are found, number of web pages  for storing the issues is calculated and each web page is requested. From each page the date of issue opened from all issues is found from the class "issue-meta" and pushed in to the array.
 
 Number of days difference is calculated and Stored in the Json variable according to day difference. Response is sent with JSON body which contains the open issues opened in a day, week and above one week. In the web page this response is parsed and displayed in the table.
+
+Requirements:
+  -Node.js
+
+#Node server set up Steps
+  -downlaod the project zip file and unzip it.
+  -run the command prompt and go to the project folder.
+  -run the command "npm install"(required node modules will be downloaded)
+  -"node ./bin/www" runs the server listening at the port 3000.
+  
