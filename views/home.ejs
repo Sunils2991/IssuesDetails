@@ -1,0 +1,62 @@
+<!doctype html>	
+<%#Home page of the application to search for github project%>
+
+<html ng-app="gitHubApp">							<%#Angular application name is gitHubApp%>
+	<head>
+	    <% include partials/head %>
+	</head>
+	
+	<body ng-controller="gitHubCtrl">				<%#Controller name is gitHubCtrl%>
+		<center>
+			<div class= "alert alert-info">
+     			<h3>GitHub</h3>
+			</div>
+		</center>
+		
+		<%#Search box and buttons%>
+		<div class="row">
+			<div class="col-lg-8">
+					<form name="myForm" class="input-group">
+						<input type="url" name="input"  ng-model="url" class="form-control" placeholder="URL for github project...!!!">
+						<span class="input-group-btn">
+							<button ng-disabled="myForm.input.$error.url" class="btn btn-default" type="button" ng-click="search(url)">Go!</button>
+						 </span>	
+					</form>
+			</div>		
+
+			<div class="col-lg-4" role="alert">
+				<span class="error" ng-show="myForm.input.$error.required">
+				  Required!</span>
+				<span class="error" ng-show="myForm.input.$error.url">
+				  Not valid url!</span>
+			</div>
+		</div>
+			
+		<%#Table to show the issues	details	%>
+		<br><br>
+		<table class="table table-bordered col-lg-8" ng-hide="err">
+			<thead>
+			  <tr>
+				<th>Open issues</th>
+				<th>OI opened withinin a day</th>
+				<th>OI opened within a week</th>
+				<th>OI opened more than a week </th>
+			  </tr>
+			</thead>
+			
+			<tbody>
+			  <tr>
+				<td>{{openIssues}}</td>
+				<td>{{openIssues24}}</td>
+				<td>{{openIssues24_7}}</td>
+				<td>{{openIssuesGt24_7}}</td>
+			  </tr>
+			</tbody>
+		</table>
+		 
+		<%#To display error message if any%>
+		<h>{{info}} <h>
+			
+		
+	</body>
+</html>
