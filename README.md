@@ -34,4 +34,4 @@ Number of days difference is calculated and Stored in the Json variable accordin
   - Given solution takes some time to fetch details if more issues are there. I would have tried to minimize that time     if more time was there.
 
 #Application URL
-  https://gentle-sands-5746.herokuapp.com/home
+  https://rocky-ocean-1593.herokuapp.com/home
