@@ -53,12 +53,14 @@ router.post('/issuesDetails', function(req, res){
 				
 				var openIssuesResult = totalopenIssues.split(" ");
 				openIssues = openIssuesResult[1]; // storing the total number of issues
+				openIssues = openIssues.replace(/\,/g,"");
+				openIssues = parseInt(openIssues,10)
 				if(1)			//in the "first table-list-header-toggle" class, open issues are found. So breaking the loop 
 					return false;
 			});
 				
 			// One page contains 25 issues. If issues are more than 25, request must be made to all pages to get issues date
-			if(openIssues){
+			if(openIssues){				
 				noOfPages = Math.ceil(parseInt(openIssues)/25);
 			}
 			
