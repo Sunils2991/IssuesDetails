@@ -46,9 +46,8 @@ router.post('/issuesDetails', function(req, res){
 			var $ = cheerio.load(html);
 			//class table-list-header-toggle gives the total number of open issues for the project
 			$('.table-list-header-toggle').each(function() {
-					var data = $(this);
-					totalopenIssues1 = data.children().first().text();
-					
+					var totalopenIssues1 = $(this).children().first().text();
+
 					totalopenIssues2 = totalopenIssues1.replace(/(\r\n|\n|\r)/gm,"");
 					totalopenIssues = totalopenIssues2.replace(/  +/g, ' ');
 					
@@ -65,65 +64,54 @@ router.post('/issuesDetails', function(req, res){
 				console.log(noOfPages);
 			}
 			
-			//sending response
-			
-			function sendResponse() {
-				for(var k = 0; k < totalIssues.length; k++){			// for finding number of issues according to day difference 
-										if (totalIssues[k] < 1 ){ 
-											openIssues24 = openIssues24 + 1 ;
-										}
-										else if (totalIssues[k] < 7 ){
-											openIssues24_7 = openIssues24_7 + 1;
-										}
-										else 
-										openIssuesGt24_7 = openIssuesGt24_7 + 1;
-				}							
-				issueDetails.openIssues = openIssues;				//forming JSON data
-				issueDetails.openIssues24 = openIssues24;
-				issueDetails.openIssues24_7 = openIssues24_7;
-				issueDetails.openIssuesGt24_7 = openIssuesGt24_7;
-				console.log(issueDetails);
-				res.status(200).json(issueDetails);	
-			}
-			//loop to get all issues date
-			for (i = 1; i <= noOfPages; i++) {
-				var changedUrl = url+"?page="+i+"&q=is%3Aissue+is%3Aopen";			//URL for requesting all the pages individually	
+			//Recursive loop helps in synchronized requests
+			(function loop() {
+				if (i <= noOfPages) {   												//Requesting all pages
+					var changedUrl = url+"?page="+i+"&q=is%3Aissue+is%3Aopen";			//URL for requesting all the pages individually	
 					request(changedUrl, function(error, response, html){				//requesting thee web page
 						if(error){
 							return console.log(error);
 						}
 						else{
 							var $ = cheerio.load(html);
-							$('.issue-meta').each(function(){
+							$('time').each(function(){
 								var dataLoop = $(this);
-								issues = dataLoop.children().first().text();				//fetching data from the class
-								issues = issues.replace(/(\r\n|\n|\r)/gm,"");				// formatting the data
-								issues = issues.replace(/  +/g, ' ');						// formatting the data
-								issues= issues.split(" ");									// formatting the data
-								issuesDateString= issues[3]+" "+ issues[4] + " " +issues[5];// Taking Date of issue
-								issuesTimestamp = Date.parse(issuesDateString);				//converting to  timestamp	
-							
-								issuesDate = new Date(issuesTimestamp);						//Human readable date
+								var time = dataLoop.attr('datetime');
+								var issuesDate = new Date(time).getTime();
 								console.log(issuesDate);
 								var today = new Date();									
-								var _MS_PER_DAY = 1000 * 60 * 60 * 24;						// for converting milliseconds to day
-								var utc1 = Date.UTC(issuesDate.getFullYear(), issuesDate.getMonth(), issuesDate.getDate()); //universal time
-								var utc2 = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());				//universal time
-
-								diffDays = Math.floor((utc2 - utc1) / _MS_PER_DAY);			//finding difference in days
-					
+								var _MS_PER_DAY = 1000 * 60 * 60;						// for converting milliseconds to hours
+								
+								diffDays = Math.floor((today - issuesDate) / _MS_PER_DAY);			//finding difference hours
 								totalIssues.push(diffDays);									//pushing difference in days data to array
 			
-								if(totalIssues.length==openIssues){		// for last request sending response
-									sendResponse();		
+								if(i == noOfPages && totalIssues.length==openIssues){		// for last request sending response
+									for(var k = 0; k < totalIssues.length; k++){			// for finding number of issues according to day difference 
+										if (totalIssues[k] < 24 ){ 
+											openIssues24 = openIssues24 + 1 ;
+										}
+										else if (totalIssues[k] < (24*7) ){
+											openIssues24_7 = openIssues24_7 + 1;
+										}
+										else 
+										openIssuesGt24_7 = openIssuesGt24_7 + 1;
+									}							
+									issueDetails.openIssues = openIssues;				//forming JSON data
+									issueDetails.openIssues24 = openIssues24;
+									issueDetails.openIssues24_7 = openIssues24_7;
+									issueDetails.openIssuesGt24_7 = openIssuesGt24_7;
+									console.log(issueDetails);
+									res.status(200).json(issueDetails);					// sending response back
 								}								
 							});
 						}
-					});	
-			}
-		}
-	});
-			
+						i++;
+						loop();
+					});					
+				}
+			}());	
+		}					
+	});	
 });
 
 module.exports = router;
