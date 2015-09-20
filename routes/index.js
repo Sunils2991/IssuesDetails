@@ -23,11 +23,14 @@ router.post('/issuesDetails', function(req, res){
 
 	/*----Declaring varaibles required in the further process----*/
 	var url = jsonBody.url;				//github project issue url
-	var openIssues = 0, 	//total number of issues
-		openIssues24 = 0, 		// issues in a day
-		openIssues24_7 = 0, 	//issues in a week
-		openIssuesGt24_7 = 0,	//issues above in a week
+	var openIssues = 0, 				//total number of issues
+		openIssues24 = 0, 			// issues in a day
+		openIssues24_7 = 0, 			//issues in a week
+		openIssuesGt24_7 = 0,			//issues above in a week
 		noOfPages; 				//Number of pages
+	var today = new Date();									
+	var _MS_PER_DAY = 1000 * 60 * 60;		// for converting milliseconds to hours
+
 				
     var issueDetails = { openIssues : "", openIssues24 : "", openIssues24_7 : "", openIssuesGt24_7: "" };	//Json data to be sent with issue details
 	
@@ -98,9 +101,7 @@ router.post('/issuesDetails', function(req, res){
 								var dataLoop = $(this);
 								var time = dataLoop.attr('datetime');
 								var issuesDate = new Date(time).getTime();
-								var today = new Date();									
-								var _MS_PER_DAY = 1000 * 60 * 60;						// for converting milliseconds to hours
-								
+												
 								diffDays = Math.floor((today - issuesDate) / _MS_PER_DAY);			//finding difference hours
 								totalIssues.push(diffDays);									//pushing difference in days data to array
 			
